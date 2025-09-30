@@ -69,7 +69,7 @@ void displayTable(int n) {
     printf("-------------------------------------------------------------------------------\n");
 
     while (ptr != NULL) {
-        printf("|   P%-4d |   %-6d| %-5d| %-5d| %-6d| %-7d| %-7d| %-7d|\n",
+        printf("|   P%-4d |   %-6d| %-5d| %-6d| %-8d| %-8d| %-7d| %-7d|\n",
                ptr->process, ptr->arrival_time, ptr->burst_time,
                ptr->start_time, ptr->finish_time,
                ptr->tat, ptr->wt, ptr->rt);
@@ -124,6 +124,16 @@ void displayGantt() {
     printf("\n");
 }
 
+//free linked list memory
+void freeList() {
+    Node *ptr = start;
+    while (ptr != NULL) {
+        Node *temp = ptr;
+        ptr = ptr->next;
+        free(temp);
+    }
+}
+
 // Create linked list from input arrays
 void create(int p, int bt[], int at[]) {
     for (int i = 0; i < p; i++) {
@@ -137,6 +147,10 @@ int main() {
     int p;
     printf("\nEnter number of processes: ");
     scanf("%d", &p);
+    if(p<=0){
+        printf("Number of processes must be positive.\n");
+        return 1;
+    }
 
     int bt[p], at[p];
     printf("Enter burst time and arrival time for each process:\n");
@@ -157,6 +171,7 @@ int main() {
     calculateTimes();
     displayTable(p);
     displayGantt();
+    freeList();
 
     return 0;
 }
